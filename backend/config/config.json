@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "Guilherme100!",
+    "database": "crud_fullstack",
+    "host": "localhost",
+    "dialect": "postgres",
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "underscoredAll": true,
+      "createdAt": "data_de_criacao",
+      "updatedAt": "data_de_atualizacao"
+    }
+  }
+}
