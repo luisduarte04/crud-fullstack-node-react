@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import apiService from '../lib/api';
+import { useState, useEffect } from "react";
+import apiService from "../lib/api";
 
 interface User {
-  id: number;
-  name: string;
+  id?: number;
+  nome: string;
   email: string;
+  telefone: string;
 }
 
 const UserList = () => {
@@ -19,24 +20,24 @@ const UserList = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const data = await apiService.get<User[]>('/users');
+      const data = await apiService.get<User[]>("/users");
       setUsers(data);
       setError(null);
     } catch (err) {
-      setError('Failed to fetch users');
+      setError("Failed to fetch users");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this user?')) return;
-    
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
     try {
       await apiService.delete(`/users/${id}`);
-      setUsers(users.filter(user => user.id !== id));
+      setUsers(users.filter((user) => user.id !== id));
     } catch (err) {
-      setError('Failed to delete user');
+      setError("Failed to delete user");
     }
   };
 
@@ -55,25 +56,25 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td>{user.nome}</td>
               <td>{user.email}</td>
+              <td>{user.telefone}</td>
               <td>
-                <button onClick={() => window.location.href = `/users/edit/${user.id}`}>
+                <button
+                  style={{ marginRight: "10px" }}
+                  onClick={() => (window.location.href = `/users/edit/${user.id}`)}
+                >
                   Edit
                 </button>
-                <button onClick={() => handleDelete(user.id)}>
-                  Delete
-                </button>
+                <button onClick={() => handleDelete(user.id!)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={() => window.location.href = '/users/new'}>
-        Add New User
-      </button>
+      <button onClick={() => (window.location.href = "/users/new")}>Add New User</button>
     </div>
   );
 };

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import apiService from '../lib/api';
+import { useState, useEffect } from "react";
+import apiService from "../lib/api";
 
 interface User {
   id?: number;
-  name: string;
+  nome: string;
   email: string;
+  telefone: string;
 }
 
 interface UserFormProps {
@@ -13,8 +14,9 @@ interface UserFormProps {
 
 const UserForm = ({ userId }: UserFormProps) => {
   const [user, setUser] = useState<User>({
-    name: '',
-    email: ''
+    nome: "",
+    email: "",
+    telefone: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +33,7 @@ const UserForm = ({ userId }: UserFormProps) => {
       const data = await apiService.get<User>(`/users/${id}`);
       setUser(data);
     } catch (err) {
-      setError('Failed to fetch user');
+      setError("Failed to fetch user");
     } finally {
       setLoading(false);
     }
@@ -44,11 +46,12 @@ const UserForm = ({ userId }: UserFormProps) => {
       if (userId) {
         await apiService.put(`/users/${userId}`, user);
       } else {
-        await apiService.post('/users', user);
+        console.log(user);
+        await apiService.post("/users", user);
       }
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (err) {
-      setError('Failed to save user');
+      setError("Failed to save user");
     } finally {
       setLoading(false);
     }
@@ -56,43 +59,33 @@ const UserForm = ({ userId }: UserFormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUser(prev => ({ ...prev, [name]: value }));
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="user-form">
-      <h2>{userId ? 'Edit User' : 'Create User'}</h2>
+      <h2>{userId ? "Edit User" : "Create User"}</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={user.name}
-            onChange={handleChange}
-            required
-          />
+          <label htmlFor="nome">Name:</label>
+          <input type="text" id="nome" name="nome" value={user.nome} onChange={handleChange} required />
         </div>
         <div>
           <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={user.email}
-            onChange={handleChange}
-            required
-          />
+          <input type="email" id="email" name="email" value={user.email} onChange={handleChange} required />
+        </div>
+        <div>
+          <label htmlFor="telefone">Telefone:</label>
+          <input type="text" id="telefone" name="telefone" value={user.telefone} onChange={handleChange} required />
         </div>
         <div>
           <button type="submit" disabled={loading}>
-            {userId ? 'Update' : 'Create'}
+            {userId ? "Update" : "Create"}
           </button>
-          <button type="button" onClick={() => window.location.href = '/'}>
+          <button type="button" onClick={() => (window.location.href = "/")}>
             Cancel
           </button>
         </div>

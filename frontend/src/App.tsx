@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<UserList />} />
           <Route path="/users/new" element={<UserForm />} />
-          <Route path="/users/edit/:id" element={<UserForm />} />
+          <Route path="/users/edit/:id" element={<UserForm userId={window.location.pathname.split("/").pop()} />} />
         </Routes>
       </div>
     </Router>
