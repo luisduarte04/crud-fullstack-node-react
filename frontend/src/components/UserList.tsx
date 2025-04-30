@@ -31,7 +31,7 @@ const UserList = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Tem certeza que deseja excluir este usuário?")) return;
 
     try {
       await apiService.delete(`/users/${id}`);
@@ -41,18 +41,19 @@ const UserList = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return <div>Carregando...</div>;
+  if (error) return <div className="error">{error === "Failed to fetch users" ? "Falha ao buscar usuários" : "Falha ao excluir usuário"}</div>;
 
   return (
     <div className="user-list">
-      <h2>Users</h2>
+      <h2>Usuários</h2>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Nome</th>
             <th>Email</th>
-            <th>Actions</th>
+            <th>Telefone</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -66,15 +67,15 @@ const UserList = () => {
                   style={{ marginRight: "10px" }}
                   onClick={() => (window.location.href = `/users/edit/${user.id}`)}
                 >
-                  Edit
+                  Editar
                 </button>
-                <button onClick={() => handleDelete(user.id!)}>Delete</button>
+                <button onClick={() => handleDelete(user.id!)}>Excluir</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={() => (window.location.href = "/users/new")}>Add New User</button>
+      <button onClick={() => (window.location.href = "/users/new")}>Adicionar Novo Usuário</button>
     </div>
   );
 };

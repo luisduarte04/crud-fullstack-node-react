@@ -33,7 +33,7 @@ const UserForm = ({ userId }: UserFormProps) => {
       const data = await apiService.get<User>(`/users/${id}`);
       setUser(data);
     } catch (err) {
-      setError("Failed to fetch user");
+      setError("Falha ao buscar usuário");
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ const UserForm = ({ userId }: UserFormProps) => {
       }
       window.location.href = "/";
     } catch (err) {
-      setError("Failed to save user");
+      setError("Falha ao salvar usuário");
     } finally {
       setLoading(false);
     }
@@ -66,11 +66,11 @@ const UserForm = ({ userId }: UserFormProps) => {
 
   return (
     <div className="user-form">
-      <h2>{userId ? "Edit User" : "Create User"}</h2>
-      {error && <div className="error">{error}</div>}
+      <h2>{userId ? "Editar Usuário" : "Criar Usuário"}</h2>
+      {error && <div className="error">{error === "Failed to fetch user" ? "Falha ao buscar usuário" : "Falha ao salvar usuário"}</div>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="nome">Name:</label>
+          <label htmlFor="nome">Nome:</label>
           <input type="text" id="nome" name="nome" value={user.nome} onChange={handleChange} required />
         </div>
         <div>
@@ -83,10 +83,10 @@ const UserForm = ({ userId }: UserFormProps) => {
         </div>
         <div>
           <button type="submit" disabled={loading}>
-            {userId ? "Update" : "Create"}
+            {userId ? "Atualizar" : "Criar"}
           </button>
           <button type="button" onClick={() => (window.location.href = "/")}>
-            Cancel
+            Cancelar
           </button>
         </div>
       </form>
